@@ -93,7 +93,7 @@ while True:
     else:
         player2.letter = 'X'
     turn = whoGoesFirst(player1, player2)
-    print('The ' + turn.name + ' will go first.')
+    print(turn.name + ' will go first.')
     gameIsPlaying = True
 
     while gameIsPlaying:
