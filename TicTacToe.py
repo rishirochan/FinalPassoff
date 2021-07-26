@@ -30,13 +30,6 @@ class TictactoeBoard:
                 return False
         return True
 
-    def getBoardCopy(self):
-        # Make a duplicate of the board list and return it the duplicate.
-        dupeBoard = []
-        for i in self.board:
-            dupeBoard.append(i)
-        return dupeBoard
-
     def makeMove(self, letter, move):
         self.board[move] = letter
 
@@ -48,9 +41,6 @@ class Player:
     def __init__(self, name):
         self.letter = ''
         self.name = name
-
-    # def getPlayerName(self):
-    #     return self.name
 
     def getPlayerMove(self,tttboard):
         # Let the player type in his move.
@@ -66,12 +56,6 @@ class Player:
         while not (self.letter == 'X' or self.letter == 'O'):
             print('Do you, Player1, want to be X or O?')
             self.letter = input().upper()
-
-        # # the first element in the tuple is the player's letter, the second is the computer's letter.
-        # if player1.letter == 'X':
-        #     return ['X','O']
-        # else:
-        #     return ['O', 'X']
 
 def whoGoesFirst(player1,player2) -> object:
     # Randomly choose the player who goes first.
@@ -97,63 +81,12 @@ def isWinner(bo, le):
             (bo.board[7] == le and bo.board[5] == le and bo.board[3] == le) or # diagonal
             (bo.board[9] == le and bo.board[5] == le and bo.board[1] == le)) # diagonal
 
-# def chooseRandomMoveFromList(board, movesList):
-#     # Returns a valid move from the passed list on the passed board.
-#     # Returns None if there is no valid move.
-#     possibleMoves = []
-#     for i in movesList:
-#         if isSpaceFree(board, i):
-#             possibleMoves.append(i)
-#
-#     if len(possibleMoves) != 0:
-#         return random.choice(possibleMoves)
-#     else:
-#         return None
-#
-# def getComputerMove(board, computerLetter):
-#     # Given a board and the computer's letter, determine where to move and return that move.
-#     if computerLetter == 'X':
-#         playerLetter = 'O'
-#     else:
-#         playerLetter = 'X'
-#
-#     # Here is our algorithm for our Tic Tac Toe AI:
-#     # First, check if we can win in the next move
-#     for i in range(1, 10):
-#         copy = getBoardCopy(board)
-#         if isSpaceFree(copy, i):
-#             makeMove(copy, computerLetter, i)
-#             if isWinner(copy, computerLetter):
-#                 return i
-#
-#     # Check if the player could win on his next move, and block them.
-#     for i in range(1, 10):
-#         copy = getBoardCopy(board)
-#         if isSpaceFree(copy, i):
-#             makeMove(copy, playerLetter, i)
-#             if isWinner(copy, playerLetter):
-#                 return i
-#
-#     # Try to take one of the corners, if they are free.
-#     move = chooseRandomMoveFromList(board, [1, 3, 7, 9])
-#     if move != None:
-#         return move
-#
-#     # Try to take the center, if it is free.
-#     if isSpaceFree(board, 5):
-#         return 5
-#
-#     # Move on one of the sides.
-#     return chooseRandomMoveFromList(board, [2, 4, 6, 8])
-
 while True:
     print('Welcome to Tic Tac Toe!')
     theBoard=TictactoeBoard()
     player1=Player('player1')
     player2=Player('player2')
 
-# Reset the board
-    # theBoard = [' '] * 10
     player1.inputPlayerLetter()
     if player1.letter == 'X':
         player2.letter = 'O'
