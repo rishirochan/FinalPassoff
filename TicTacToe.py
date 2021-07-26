@@ -4,9 +4,9 @@ import random
 class TictactoeBoard:
     def __init__(self):
         self.board = {
-            "7": " ", "8": " ", "9": " ",
-            "4": " ", "5": " ", "6": " ",
-            "1": " ", "2": " ", "3": " "}
+            7: " ", 8: " ", 9: " ",
+            4: " ", 5: " ", 6: " ",
+            1: " ", 2: " ", 3: " "}
 
     def drawBoard(self):
         # This function prints out the board that it was passed.
@@ -45,15 +45,12 @@ class TictactoeBoard:
         return self.board[move] == ' '
 
 class Player:
-    def __int__(self):
+    def __init__(self, name):
         self.letter = ''
+        self.name = name
 
-    def whoGoesFirst(self,player1,player2):
-        # Randomly choose the player who goes first.
-        if random.randint(0, 11) > 3:
-            return player1
-        else:
-            return player2
+    # def getPlayerName(self):
+    #     return self.name
 
     def getPlayerMove(self,tttboard):
         # Let the player type in his move.
@@ -76,6 +73,12 @@ class Player:
         # else:
         #     return ['O', 'X']
 
+def whoGoesFirst(player1,player2) -> object:
+    # Randomly choose the player who goes first.
+    if random.randint(0, 11) > 3:
+        return player1
+    else:
+        return player2
 
 def playAgain():
     # This function returns True if the player wants to play again, otherwise it returns False.
@@ -85,14 +88,14 @@ def playAgain():
 def isWinner(bo, le):
     # Given a board and a player's letter, this function returns True if that player has won.
     # We use bo instead of board and le instead of letter so we don't have to type as much.
-    return ((bo[7] == le and bo[8] == le and bo[9] == le) or # across the top
-            (bo[4] == le and bo[5] == le and bo[6] == le) or # across the middle
-            (bo[1] == le and bo[2] == le and bo[3] == le) or # across the bottom
-            (bo[7] == le and bo[4] == le and bo[1] == le) or # down the left side
-            (bo[8] == le and bo[5] == le and bo[2] == le) or # down the middle
-            (bo[9] == le and bo[6] == le and bo[3] == le) or # down the right side
-            (bo[7] == le and bo[5] == le and bo[3] == le) or # diagonal
-            (bo[9] == le and bo[5] == le and bo[1] == le)) # diagonal
+    return ((bo.board[7] == le and bo.board[8] == le and bo.board[9] == le) or # across the top
+            (bo.board[4] == le and bo.board[5] == le and bo.board[6] == le) or # across the middle
+            (bo.board[1] == le and bo.board[2] == le and bo.board[3] == le) or # across the bottom
+            (bo.board[7] == le and bo.board[4] == le and bo.board[1] == le) or # down the left side
+            (bo.board[8] == le and bo.board[5] == le and bo.board[2] == le) or # down the middle
+            (bo.board[9] == le and bo.board[6] == le and bo.board[3] == le) or # down the right side
+            (bo.board[7] == le and bo.board[5] == le and bo.board[3] == le) or # diagonal
+            (bo.board[9] == le and bo.board[5] == le and bo.board[1] == le)) # diagonal
 
 # def chooseRandomMoveFromList(board, movesList):
 #     # Returns a valid move from the passed list on the passed board.
@@ -143,53 +146,59 @@ def isWinner(bo, le):
 #     # Move on one of the sides.
 #     return chooseRandomMoveFromList(board, [2, 4, 6, 8])
 
-print('Welcome to Tic Tac Toe!')
-
 while True:
-    # Reset the board
-    theBoard = [' '] * 10
-    playerLetter, computerLetter = inputPlayerLetter()
-    turn = whoGoesFirst()
-    print('The ' + turn + ' will go first.')
+    print('Welcome to Tic Tac Toe!')
+    theBoard=TictactoeBoard()
+    player1=Player('player1')
+    player2=Player('player2')
+
+# Reset the board
+    # theBoard = [' '] * 10
+    player1.inputPlayerLetter()
+    if player1.letter == 'X':
+        player2.letter = 'O'
+    else:
+        player2.letter = 'X'
+    turn = whoGoesFirst(player1, player2)
+    print('The ' + turn.name + ' will go first.')
     gameIsPlaying = True
 
     while gameIsPlaying:
-        if turn == 'player':
+        if turn.name == 'player1':
             # Player's turn.
-            Board = TictactoeBoard()
-            Board.drawBoard(theBoard)
-            move = getPlayerMove(theBoard)
-            makeMove(theBoard, playerLetter, move)
+            theBoard.drawBoard()
+            move = player1.getPlayerMove(theBoard)
+            theBoard.makeMove(player1.letter, move)
 
-            if isWinner(theBoard, playerLetter):
-                drawBoard(theBoard)
-                print('Hooray! You have won the game!')
+            if isWinner(theBoard, player1.letter):
+                theBoard.drawBoard()
+                print('Player1 has won the game! PLayer2 lost.')
                 gameIsPlaying = False
             else:
-                if isBoardFull(theBoard):
-                    drawBoard(theBoard)
+                if theBoard.isBoardFull():
+                    theBoard.drawBoard()
                     print('The game is a tie!')
                     break
                 else:
-                    turn = 'computer'
+                    turn = player2
 
         else:
             # Computer's turn.
-            Board.drawBoard(theBoard)
-            move = getPlayerMove(theBoard)
-            makeMove(theBoard, computerLetter, move)
+            theBoard.drawBoard()
+            move = player2.getPlayerMove(theBoard)
+            theBoard.makeMove(player2.letter, move)
 
-            if isWinner(theBoard, computerLetter):
-                drawBoard(theBoard)
-                print('The computer has beaten you! You lose.')
+            if isWinner(theBoard, player2.letter):
+                theBoard.drawBoard()
+                print('Player2 has won the game! Player1 lose.')
                 gameIsPlaying = False
             else:
-                if isBoardFull(theBoard):
-                    drawBoard(theBoard)
+                if theBoard.isBoardFull():
+                    theBoard.drawBoard()
                     print('The game is a tie!')
                     break
                 else:
-                    turn = 'player'
+                    turn = player1
 
     if not playAgain():
         break
